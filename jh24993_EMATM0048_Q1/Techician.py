@@ -11,4 +11,7 @@ class Technician:
         return self.weekly_rate
     
     def get_specialty(self):
-        return self.weekly_rate
+        return self.specialty
+
+    def __str__(self):
+        return self.name
