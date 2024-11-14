@@ -1,6 +1,5 @@
 # models/hatchery.py
-
-from Technician import Technician
+from Technician import technicians
 from fish import Fish
 from warehouse import Warehouse
 from config import Config
@@ -27,3 +26,5 @@ class Hatchery:
     def add_cash(self, amount):
         self.cash += amount
         print(f"Added cash: {amount}. New balance: {self.cash}")
+        
+        
