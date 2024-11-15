@@ -1,5 +1,5 @@
 # models/hatchery.py
-from Technician import technicians
+from Technician import Technician
 from fish import Fish
 from warehouse import Warehouse
 from config import Config
@@ -26,5 +26,12 @@ class Hatchery:
     def add_cash(self, amount):
         self.cash += amount
         print(f"Added cash: {amount}. New balance: {self.cash}")
+        
+#Add the technician name and specialty
+def hire_technician(self, name, specialty=None):
+        technician = Technician(name, Config.TECHNICIAN_WEEKLY_RATE, specialty=specialty)
+        self.technicians.append(technician)
+        print(f"Hired technician: {name} with specialty: {specialty}")
+ 
         
         
