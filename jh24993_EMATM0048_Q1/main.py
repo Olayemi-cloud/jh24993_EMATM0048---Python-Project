@@ -12,7 +12,7 @@ def run_simulation():
         print(f"\n{'='*40}\nQuarter {quarter}")
         
         # Prompt for technician adjustments      
-        manage_technicians(hatchery)
+        #manage_technicians(hatchery)
         
         
 def manage_technicians(hatchery):
@@ -22,4 +22,14 @@ def manage_technicians(hatchery):
     
     if choice == 'add':
         name = input("Enter technician's name: ").strip()
-        
+        specialty = input("Does this technician have a specialty fish type? (yes/no): ").strip().lower()
+        if specialty == 'yes':
+            fish_type = input("Enter the specialty fish type: ").strip()
+            hatchery.hire_technician(name, specialty=fish_type)
+        else:
+            hatchery.hire_technician(name)
+
+
+    elif choice == 'remove':
+        name = input("Enter the name of the technician to remove: ").strip()
+        hatchery.fire_technician(name)
