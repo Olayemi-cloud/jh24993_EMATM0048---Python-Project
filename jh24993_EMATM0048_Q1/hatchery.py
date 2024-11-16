@@ -26,12 +26,21 @@ class Hatchery:
     def add_cash(self, amount):
         self.cash += amount
         print(f"Added cash: {amount}. New balance: {self.cash}")
-        
+                
+#Subtract cash function       
+    def deduct_cash(self, amount):
+        if amount > self.cash:
+            print(f"Cannot deduct {amount}, insufficient cash. Current balance: {self.cash}")
+            return
+       
+
 #Add the technician name and specialty
-def hire_technician(self, name, specialty=None):
+    def hire_technician(self, name, specialty=None):
         technician = Technician(name, Config.TECHNICIAN_WEEKLY_RATE, specialty=specialty)
         self.technicians.append(technician)
         print(f"Hired technician: {name} with specialty: {specialty}")
+        
+
  
         
         
