@@ -12,7 +12,7 @@ def run_simulation():
         print(f"\n{'='*40}\nQuarter {quarter}")
         
         # Prompt for technician adjustments      
-        #manage_technicians(hatchery)
+        manage_technicians(hatchery)
         
         
 def manage_technicians(hatchery):
@@ -33,3 +33,18 @@ def manage_technicians(hatchery):
     elif choice == 'remove':
         name = input("Enter the name of the technician to remove: ").strip()
         hatchery.fire_technician(name)
+
+
+def manage_fish_sales(hatchery):
+    """Prompt manager to specify the number of fish to sell for each fish type."""
+    print("\nManage Fish Sales:")
+    fish_sales = {}
+    
+    for fish in hatchery.fish_types:
+        amount = int(input(f"Enter the amount of {fish.name} to sell: ") or 0)
+        fish_sales[fish.name] = amount
+    
+    return fish_sales
+
+if __name__ == "__main__":
+    run_simulation()
