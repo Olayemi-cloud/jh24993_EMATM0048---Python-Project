@@ -8,6 +8,9 @@ class Fish:
         self.required_feed = required_feed
         self.required_salt = required_salt
 
+    def simulate_sales(self):
+        # Placeholder for sales simulation logic
+        return min(self.demand, self.demand)  # Simulate selling all available demand
 
 
         
