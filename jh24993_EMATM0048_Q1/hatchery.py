@@ -23,9 +23,27 @@ class Hatchery:
             print(f"Hired {name}, weekly rate={technician.weekly_rate} in quarter {quarter}")
 
         
-    
+    def simulate_quarter(self, quarter):
+        technician_labour_constant = 2.25  # Labour capacity per technician
+        total_labour_capacity = len(self.technicians) * technician_labour_constant
+        spillover_labour = getattr(self, "remaining_labour", 0)
+        total_available_labour = total_labour_capacity + spillover_labour
 
-   
+        # Define fishes with specific requirements
+        fishes = [
+            Fish("Clef Fins", 25, 250, 2.0, 2, 2, 2.0),
+            Fish("Timpani Snapper", 10, 350, 1.5, 1.5, 1, 1.0),
+            Fish("Andalusian Brim", 15, 250, 1.8, 0.5, 1.2, 0.5),
+            Fish("Plagal Cod", 20, 20, 400, 2.0, 1.5, 2.0),
+            Fish("Fugue Flounder", 30, 500, 2.5, 2.5, 2.5, 2.5),
+            Fish("Modal Bass", 50, 500, 3.0, 3, 3, 3.0),
+        ]
+
+       # total_required_labour = sum(1 + c.labour_constant for c in fishes)
+        total_required_labour = sum(c.labour_constant for c in fishes)
+        print(f"Quarter {quarter}: Labour required = {total_required_labour}, Labour available = {total_available_labour}")
+
+    total_revenue = 0  # Initialize total revenue for the quarter
  
         
         
