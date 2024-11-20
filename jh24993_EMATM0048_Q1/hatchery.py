@@ -73,7 +73,26 @@ class Hatchery:
             remaining_labour = total_available_labour - total_required_labour
 
         
-    
+
+    def process_warehouse_requirements(self, fish, amount):
+        required_fertilizer = fish.required_fertilizer * amount
+        required_feed = fish.required_feed * amount
+        required_salt = fish.required_salt * amount
+
+        total_fertilizer = sum(self.warehouse_supplies[warehouse]["fertilizer"] for warehouse in self.warehouse_supplies)
+        total_feed = sum(self.warehouse_supplies[warehouse]["feed"] for warehouse in self.warehouse_supplies)
+        total_salt = sum(self.warehouse_supplies[warehouse]["salt"] for warehouse in self.warehouse_supplies)
+
+        if total_fertilizer < required_fertilizer or total_feed < required_feed or total_salt < required_salt:
+            max_fertilizer_limit = total_fertilizer / fish.required_fertilizer
+            max_feed_limit = total_feed / fish.required_feed
+            max_salt_limit = total_salt / fish.required_salt
+            max_possible_amount = min(max_fertilizer_limit, max_feed_limit, max_salt_limit)
+            self.withdraw_from_warehouse(fish, max_possible_amount)
+            return max_possible_amount
+        else:
+            self.withdraw_from_warehouse(fish, amount)
+            return amount
  
         
         
