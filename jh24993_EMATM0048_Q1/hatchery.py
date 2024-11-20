@@ -32,37 +32,54 @@ class Hatchery:
         # Define fishes with specific requirements
         fishes = [
             Fish("Clef Fins", 25, 250, 2.0, 2, 2, 2.0),
-            Fish("Timpani Snapper", 10, 350, 1.5, 1.5, 1, 1.0),
-            Fish("Andalusian Brim", 15, 250, 1.8, 0.5, 1.2, 0.5),
-            Fish("Plagal Cod", 20, 20, 400, 2.0, 1.5, 2.0),
+            Fish("Timpani Snapper", 10, 350, 1.0, 1.5, 1, 1.0),
+            Fish("Andalusian Brim", 15, 250, 0.5, 0.5, 1.2, 0.5),
+            Fish("Plagal Cod", 20, 20, 2.0, 2.0, 1.5, 2.0),
             Fish("Fugue Flounder", 30, 500, 2.5, 2.5, 2.5, 2.5),
             Fish("Modal Bass", 50, 500, 3.0, 3, 3, 3.0),
         ]
 
-       # total_required_labour = sum(1 + c.labour_constant for c in fishes)
-        total_required_labour = sum(c.labour_constant for c in fishes)
-        print(f"Quarter {quarter}: Labour required = {total_required_labour}, Labour available = {total_available_labour}")
+        total_time_available = 90
+        total_required_labour = sum(fish.labour_constant * fish.demand for fish in fishes)
 
-    total_revenue = 0  # Initialize total revenue for the quarter
+        # Initialize time_left
+        time_left = total_time_available
 
-     if total_required_labour > total_available_labour:
-            print("Insufficient labour for this quarter!")
+        total_revenue = 0  # Initialize total revenue for the quarter
+        last_time_left = time_left  # To track the last positive time left
+
+        if total_required_labour > total_available_labour:
             for fish in fishes:
                 required_labour = fish.demand * fish.labour_constant
                 labour_share = (required_labour / total_required_labour) * total_available_labour
                 max_sellable = labour_share / fish.labour_constant
                 sold = self.process_warehouse_requirements(fish, max_sellable)
-                revenue = fish.sell_price
+                revenue = sold * fish.sell_price
                 total_revenue += revenue  # Add to total revenue
+
+                # Deduct labour and check for insufficiency
+                last_time_left = time_left  # Update last time left
+                time_left -= required_labour
+                if time_left < 0:
+                    print(
+                        f"{fish.name}:"
+                        f" Demand= {fish.demand}"
+                        f" Sell: {fish.demand}\n"
+                        f"Insufficient labour detected!"
+                        f"  required: {required_labour / 5}"
+                        f"  available: {last_time_left / 5}\n"
+                    )
+                    break
+
                 print(
-                    f"{fish.name}: Demand = {fish.demand}, Sold = {sold}, Revenue = {revenue}"
+                    f"{fish.name}: Demand = {fish.demand}, Sold = {sold}, Total time needed = {required_labour}, Time left = {time_left}"
                 )
-            remaining_labour = total_available_labour - sum(
+
+            remaining_labour = max(0, total_available_labour - sum(
                 min(fish.demand * fish.labour_constant, total_available_labour)
                 for fish in fishes
-            )
+            ))
         else:
-            print("Labour is sufficient for all demands.")
             for fish in fishes:
                 sold = self.process_warehouse_requirements(fish, fish.demand)
                 revenue = sold * fish.sell_price
@@ -72,7 +89,17 @@ class Hatchery:
                 )
             remaining_labour = total_available_labour - total_required_labour
 
-        
+        # Store remaining labour for next quarter
+        self.remaining_labour = remaining_labour
+
+        # Add total revenue to cash
+        self.cash += total_revenue
+
+        # Print total revenue and updated cash for the quarter
+        print(f"Total revenue for Quarter {quarter}: {total_revenue}")
+        print(f"Updated cash after revenue for Quarter {quarter}: {self.cash}")
+        self.print_warehouse_supplies(quarter)
+
 
     def process_warehouse_requirements(self, fish, amount):
         required_fertilizer = fish.required_fertilizer * amount
@@ -95,4 +122,7 @@ class Hatchery:
             return amount
  
         
-        
+
+
+
+
