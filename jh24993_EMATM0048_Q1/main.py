@@ -1,50 +1,56 @@
+from config import Config
 from hatchery import Hatchery
 
-def run_simulation():
-    print("Welcome to the Hatchery Simulation!")
-    
-    # Set up initial conditions
-    hatchery = Hatchery()
-    quarters = int(input("Enter the number of quarters to run the simulation (default is 8 for two years): ") or 8)
+def get_positive_or_negative_int(prompt):
+    """
+    Prompts the user for a positive or negative integer and validates input.
+    """
+    while True:
+        try:
+            value = int(input(prompt))
+            if value != 0:  # Ensure the input is not zero
+                return value
+            else:
+                print("Please enter a non-zero integer.")
+        except ValueError:
+            print("Invalid input. Please enter a valid integer.")
 
- # Run each quarter
-    for quarter in range(1, quarters + 1):
-        print(f"\n{'='*40}\nQuarter {quarter}")
-        
-        # Prompt for technician adjustments      
-        manage_technicians(hatchery)
-        
-        
-def manage_technicians(hatchery):
-    """Prompt manager to add or remove technicians."""
-    print("\nManage Technicians:")
-    choice = input("Would you like to add or remove technicians? (add/remove/none): ").strip().lower()
-    
-    if choice == 'add':
-        name = input("Enter technician's name: ").strip()
-        specialty = input("Does this technician have a specialty fish type? (yes/no): ").strip().lower()
-        if specialty == 'yes':
-            fish_type = input("Enter the specialty fish type: ").strip()
-            hatchery.hire_technician(name, specialty=fish_type)
+def get_technician_names(num_technicians):
+    """
+    Prompts the user to input names for a given number of technicians.
+    """
+    names = []
+    for i in range(num_technicians):
+        name = input(f"Enter name for Technician {i + 1}: ").strip()
+        if name:  # Ensure name is not empty
+            names.append(name)
         else:
-            hatchery.hire_technician(name)
+            print("Name cannot be empty. Please try again.")
+            return get_technician_names(num_technicians)  # Restart if validation fails
+    return names
 
+def main():
+    """
+    Main function to run the simulation.
+    """
+    num_quarters = get_positive_or_negative_int("Please enter number of quarters: ")
+    simulation = Hatchery(Config, num_quarters)
 
-    elif choice == 'remove':
-        name = input("Enter the name of the technician to remove: ").strip()
-        hatchery.fire_technician(name)
+    for quarter in range(1, num_quarters + 1):
+        print(f"\n{'=' * 40}\n====== SIMULATING quarter {quarter} ======\n{'=' * 40}")
 
-
-def manage_fish_sales(hatchery):
-    """Prompt manager to specify the number of fish to sell for each fish type."""
-    print("\nManage Fish Sales:")
-    fish_sales = {}
-    
-    for fish in hatchery.fish_types:
-        amount = int(input(f"Enter the amount of {fish.name} to sell: ") or 0)
-        fish_sales[fish.name] = amount
-    
-    return fish_sales
+        num_technicians = get_positive_or_negative_int(
+            "Enter number of technicians to add (positive) or remove (negative): "
+        )
+        
+        if num_technicians > 0:
+            technician_names = get_technician_names(num_technicians)
+            simulation.hire_technicians(technician_names, quarter)
+        elif num_technicians < 0:
+            num_to_remove = abs(num_technicians)
+            simulation.remove_technicians(num_to_remove)
 
 if __name__ == "__main__":
-    run_simulation()
+    main()
+
+   
