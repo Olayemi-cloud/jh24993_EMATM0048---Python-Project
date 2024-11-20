@@ -44,6 +44,36 @@ class Hatchery:
         print(f"Quarter {quarter}: Labour required = {total_required_labour}, Labour available = {total_available_labour}")
 
     total_revenue = 0  # Initialize total revenue for the quarter
+
+     if total_required_labour > total_available_labour:
+            print("Insufficient labour for this quarter!")
+            for fish in fishes:
+                required_labour = fish.demand * fish.labour_constant
+                labour_share = (required_labour / total_required_labour) * total_available_labour
+                max_sellable = labour_share / fish.labour_constant
+                sold = self.process_warehouse_requirements(fish, max_sellable)
+                revenue = fish.sell_price
+                total_revenue += revenue  # Add to total revenue
+                print(
+                    f"{fish.name}: Demand = {fish.demand}, Sold = {sold}, Revenue = {revenue}"
+                )
+            remaining_labour = total_available_labour - sum(
+                min(fish.demand * fish.labour_constant, total_available_labour)
+                for fish in fishes
+            )
+        else:
+            print("Labour is sufficient for all demands.")
+            for fish in fishes:
+                sold = self.process_warehouse_requirements(fish, fish.demand)
+                revenue = sold * fish.sell_price
+                total_revenue += revenue  # Add to total revenue
+                print(
+                    f"{fish.name}: Demand = {fish.demand}, Sold = {sold}, Revenue = {revenue}"
+                )
+            remaining_labour = total_available_labour - total_required_labour
+
+        
+    
  
         
         
