@@ -16,11 +16,22 @@ class Hatchery:
         self.warehouse_supplies = {warehouse.name: {"fertilizer": 20, "feed": 400, "salt": 100} for warehouse in self.warehouses}
                 
 
-    def hire_technicians(self, names, quarter):
-        for name in names:
-            technician = Technician(name, self.config.TECHNICIAN_WEEKLY_RATE)
-            self.technicians.append(technician)
-            print(f"Hired {name}, weekly rate={technician.weekly_rate} in quarter {quarter}")
+    def hire_technicians(self, name, quarter):
+        """
+        Hires a single technician with the provided name.
+        """
+        technician = Technician(name, self.config.TECHNICIAN_WEEKLY_RATE)
+        self.technicians.append(technician)
+        print(f"Hired {name}, weekly rate={technician.weekly_rate} in quarter {quarter}")
+
+    def remove_technicians(self, num_to_remove):
+        if num_to_remove > len(self.technicians):
+            print(f"Cannot remove {num_to_remove} technicians; only {len(self.technicians)} available.")
+            num_to_remove = len(self.technicians)
+
+        for _ in range(num_to_remove):
+            removed_technician = self.technicians.pop()
+            print(f"Removed technician: {removed_technician}")
 
         
     def simulate_quarter(self, quarter):
@@ -72,7 +83,7 @@ class Hatchery:
                     break
 
                 print(
-                    f"{fish.name}: Demand = {fish.demand}, Sold = {sold}, Total time needed = {required_labour}, Time left = {time_left}"
+                    f"{fish.name}: Demand = {fish.demand}, Sell = {fish.demand}"
                 )
 
             remaining_labour = max(0, total_available_labour - sum(
@@ -96,9 +107,8 @@ class Hatchery:
         self.cash += total_revenue
 
         # Print total revenue and updated cash for the quarter
-        print(f"Total revenue for Quarter {quarter}: {total_revenue}")
-        print(f"Updated cash after revenue for Quarter {quarter}: {self.cash}")
-        self.print_warehouse_supplies(quarter)
+        #print(f"Total revenue for Quarter {quarter}: {total_revenue}")
+        #print(f"Updated cash after revenue for Quarter {quarter}: {self.cash}")
 
 
     def process_warehouse_requirements(self, fish, amount):
@@ -120,9 +130,38 @@ class Hatchery:
         else:
             self.withdraw_from_warehouse(fish, amount)
             return amount
- 
-        
 
 
+    def withdraw_from_warehouse(self, fish, amount):
+        required_fertilizer = fish.required_fertilizer * amount
+        required_feed = fish.required_feed * amount
+        required_salt = fish.required_salt * amount
+
+        for warehouse in self.warehouses:
+            warehouse_name = warehouse.name
+
+            # Withdraw fertilizer
+            if required_fertilizer > 0:
+                available_fertilizer = self.warehouse_supplies[warehouse_name]["fertilizer"]
+                used_fertilizer = min(required_fertilizer, available_fertilizer)
+                self.warehouse_supplies[warehouse_name]["fertilizer"] -= used_fertilizer
+                required_fertilizer -= used_fertilizer
+
+            # Withdraw feed
+            if required_feed > 0:
+                available_feed = self.warehouse_supplies[warehouse_name]["feed"]
+                used_feed = min(required_feed, available_feed)
+                self.warehouse_supplies[warehouse_name]["feed"] -= used_feed
+                required_feed -= used_feed
+
+            # Withdraw salt
+            if required_salt > 0:
+                available_salt = self.warehouse_supplies[warehouse_name]["salt"]
+                used_salt = min(required_salt, available_salt)
+                self.warehouse_supplies[warehouse_name]["salt"] -= used_salt
+                required_salt -= used_salt
 
 
+    def end_simulation(self):
+        self.return_warehouse_supplies()
+        print("Simulation ended.")
