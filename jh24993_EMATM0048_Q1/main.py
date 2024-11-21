@@ -15,19 +15,18 @@ def get_positive_or_negative_int(prompt):
         except ValueError:
             print("Invalid input. Please enter a valid integer.")
 
-def get_technician_names(num_technicians):
+def hire_technicians_individually(simulation, num_technicians, quarter):
     """
-    Prompts the user to input names for a given number of technicians.
+    Prompts the user to input names for a given number of technicians
+    and hires each technician immediately.
     """
-    names = []
-    for i in range(num_technicians):
-        name = input(f"Enter name for Technician {i + 1}: ").strip()
+    for _ in range(num_technicians):
+        name = input("Enter Technician Name: ").strip()
         if name:  # Ensure name is not empty
-            names.append(name)
+            # Ensure `name` is treated as a single string
+            simulation.hire_technicians(name, quarter)
         else:
             print("Name cannot be empty. Please try again.")
-            return get_technician_names(num_technicians)  # Restart if validation fails
-    return names
 
 def main():
     """
@@ -44,13 +43,16 @@ def main():
         )
         
         if num_technicians > 0:
-            technician_names = get_technician_names(num_technicians)
-            simulation.hire_technicians(technician_names, quarter)
+            hire_technicians_individually(simulation, num_technicians, quarter)
         elif num_technicians < 0:
             num_to_remove = abs(num_technicians)
             simulation.remove_technicians(num_to_remove)
+            
+        
+        simulation.simulate_quarter(quarter)
+    print("\nSimulation complete.")
+    simulation.display_finances()
 
 if __name__ == "__main__":
     main()
-
-   
+    
