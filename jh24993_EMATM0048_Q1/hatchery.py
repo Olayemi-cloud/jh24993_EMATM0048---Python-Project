@@ -65,12 +65,12 @@ class Hatchery:
 
         # Define fishes with specific requirements
         fishes = [
-            Fish("Clef Fins", 25, 250, 2.0, 100, 12, 2.0),
-            Fish("Timpani Snapper", 10, 350, 50, 1.5, 9, 1.0),
-            Fish("Andalusian Brim", 15, 250, 90, 0.5, 6, 0.5),
-            Fish("Plagal Cod", 20, 20, 2.0, 100, 10, 40),
-            Fish("Fugue Flounder", 30, 500, 200, 2.5, 12, 2.5),
-            Fish("Modal Bass", 50, 500, 3.0, 300, 12, 3.0),
+            Fish("Clef Fins", 25, 250, 2.0, 2, 2, 2.0),
+            Fish("Timpani Snapper", 10, 350, 1.0, 1.5, 1, 1.0),
+            Fish("Andalusian Brim", 15, 250, 0.5, 0.5, 1.2, 0.5),
+            Fish("Plagal Cod", 20, 20, 2.0, 2.0, 1.5, 2.0),
+            Fish("Fugue Flounder", 30, 500, 2.5, 2.5, 2.5, 2.5),
+            Fish("Modal Bass", 50, 500, 3.0, 3, 3, 3.0),
         ]
 
         total_time_available = 90
@@ -154,7 +154,7 @@ class Hatchery:
         print(f"Salt need: {fish.required_salt} storage, Total salt available: {total_supplies['salt'] - 100}")
 
         self.print_warehouse_supplies(quarter)
-
+        
         return insufficient_labour_info, total_supplies
 
         # Print total revenue and updated cash for the quarter
@@ -182,6 +182,71 @@ class Hatchery:
             self.withdraw_from_warehouse(fish, amount)
             return amount
 
+    def restock_supplies(self, vendor):
+        print(f"Restocking supplies from {vendor}...")
+
+        # Define prices for each commodity
+        commodity_prices = {
+            "fertilizer": 10,  # Price per unit of fertilizer
+            "feed": 5,         # Price per unit of feed
+            "salt": 2          # Price per unit of salt
+        }
+
+        # Quantities to restock based on vendor
+        if vendor == "SLIPPERY Lakes":
+            restock_quantities = {"fertilizer": 50, "feed": 400, "salt": 200}
+        elif vendor == "Scaly Wholesaler":
+            restock_quantities = {"fertilizer": 30, "feed": 300, "salt": 150}
+        else:
+            print("Invalid vendor specified. No restocking done.")
+            return
+
+        # Calculate total cost and update supplies
+        total_cost = 0
+        for commodity, quantity in restock_quantities.items():
+            cost = quantity * commodity_prices[commodity]
+            total_cost += cost
+
+            # Separate warehouses by type
+            main_warehouses = [wh for wh in self.warehouses if wh.name == "Main"]
+            aux_warehouses = [wh for wh in self.warehouses if wh.name == "Auxiliary"]
+            total_warehouses = len(main_warehouses) + len(aux_warehouses)
+
+            if total_warehouses > 0:
+                per_warehouse_quantity = quantity // total_warehouses
+
+                # Stock main warehouses
+                for warehouse in main_warehouses:
+                    self.warehouse_supplies[warehouse.name][commodity] += per_warehouse_quantity
+
+                # Stock auxiliary warehouses
+                for warehouse in aux_warehouses:
+                    self.warehouse_supplies[warehouse.name][commodity] += per_warehouse_quantity
+
+        # Deduct total cost from cash
+        self.cash -= total_cost
+
+        # Display restocking details
+        print(f"Restocked supplies from {vendor}:")
+
+        # Display details for main warehouses
+        print("\nMain Warehouses:")
+        for warehouse in main_warehouses:
+            print(f"  {warehouse.name}:")
+            for commodity, quantity in restock_quantities.items():
+                per_warehouse_quantity = quantity // total_warehouses
+                print(f"    {commodity.capitalize()}: +{per_warehouse_quantity} units")
+
+        # Display details for auxiliary warehouses
+        print("\nAuxiliary Warehouses:")
+        for warehouse in aux_warehouses:
+            print(f"  {warehouse.name}:")
+            for commodity, quantity in restock_quantities.items():
+                per_warehouse_quantity = quantity // total_warehouses
+                print(f"    {commodity.capitalize()}: +{per_warehouse_quantity} units")
+
+        print(f"\nTotal restocking cost: {total_cost}")
+        print(f"Remaining cash after restocking: {self.cash}")
 
     def prompt_restock(self):
         print("List of Vendors")
@@ -202,6 +267,17 @@ class Hatchery:
             except ValueError:
                 print("Invalid input. Please enter a number (1 or 2).")
 
+
+    def display_technicians(self):
+        """
+        Displays details of all technicians.
+        """
+        if not self.technicians:
+            print("No technicians are currently hired.")
+        else:
+            print("\nTechnicians:")
+            for index, technician in enumerate(self.technicians, start=1):
+                print(f"Technician: {technician.name}, Weekly Rate: {technician.weekly_rate}")
 
 
     def print_warehouse_supplies(self, quarter):
