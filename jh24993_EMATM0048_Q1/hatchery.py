@@ -57,7 +57,7 @@ class Hatchery:
             removed_technician = self.technicians.pop()
             print(f"Removed technician: {removed_technician}")
 
-    def simulate_quarter(self, quarter):
+    def simulate_quarter(self, quarter, num_technicians):
         technician_labour_constant = 2.25  # Labour capacity per technician
         total_labour_capacity = len(self.technicians) * technician_labour_constant
         spillover_labour = getattr(self, "remaining_labour", 0)
@@ -68,12 +68,12 @@ class Hatchery:
             Fish("Clef Fins", 25, 250, 2.0, 2, 2, 2.0),
             Fish("Timpani Snapper", 10, 350, 1.0, 1.5, 1, 1.0),
             Fish("Andalusian Brim", 15, 250, 0.5, 0.5, 1.2, 0.5),
-            Fish("Plagal Cod", 20, 20, 2.0, 2.0, 1.5, 2.0),
+            Fish("Plagal Cod", 20, 400, 2.0, 2.0, 120, 40),
             Fish("Fugue Flounder", 30, 500, 2.5, 2.5, 2.5, 2.5),
             Fish("Modal Bass", 50, 500, 3.0, 3, 3, 3.0),
         ]
 
-        total_time_available = 90
+        total_time_available = 45 * num_technicians
         total_required_labour = sum(fish.labour_constant * fish.demand for fish in fishes)
 
         # Initialize time_left
@@ -85,9 +85,10 @@ class Hatchery:
         used_feed = 0
         used_salt = 0
         insufficient_labour_info = []
+        unprocessed_fishes = []
 
         if total_required_labour > total_available_labour:
-            for fish in fishes:
+            for i, fish in enumerate(fishes):
                 required_labour = fish.demand * fish.labour_constant
                 labour_share = (required_labour / total_required_labour) * total_available_labour
                 max_sellable = labour_share / fish.labour_constant
@@ -112,12 +113,18 @@ class Hatchery:
                         "insufficient_labour": True,
                     })
                     print(
-                        f"{fish.name}: Demand= {fish.demand} "
+                        f"Fish {fish.name}: Demand= {fish.demand},  "
                         f"Sell: {fish.demand}\n"
                         f"Insufficient labour"
                         f"Required: {required_labour / 5} "
-                        f"Available: {last_time_left / 5}\n"
+                        f"Available: {last_time_left / (5 if num_technicians == 1 else 2.5 * num_technicians)}\n"
                     )
+                    unprocessed_fishes.append(f"Fish {fish.name}: Demand = {fish.demand}, Sell = 0")
+                    # Add all remaining fishes to unprocessed list
+                    for remaining_fish in fishes[i + 1:]:
+                        unprocessed_fishes.append(
+                            f"{remaining_fish.name}: Demand = {remaining_fish.demand}, Sell = 0"
+                        )
                     break
        
                 else:
@@ -143,6 +150,11 @@ class Hatchery:
         # Store remaining labour for next quarter
         self.remaining_labour = remaining_labour
 
+        if unprocessed_fishes:
+            for info in unprocessed_fishes:
+                print(info)
+
+
         # Add total revenue to cash
         self.cash += total_revenue
 
@@ -154,8 +166,10 @@ class Hatchery:
         print(f"Salt need: {fish.required_salt} storage, Total salt available: {total_supplies['salt'] - 100}")
 
         self.print_warehouse_supplies(quarter)
+        self.pay_rent_and_utilities()
+        self.display_finances()
         
-        return insufficient_labour_info, total_supplies
+        #return insufficient_labour_info, total_supplies
 
         # Print total revenue and updated cash for the quarter
         #print(f"Total revenue for Quarter {quarter}: {total_revenue}")
@@ -235,7 +249,7 @@ class Hatchery:
             print(f"  {warehouse.name}:")
             for commodity, quantity in restock_quantities.items():
                 per_warehouse_quantity = quantity // total_warehouses
-                print(f"    {commodity.capitalize()}: +{per_warehouse_quantity} units")
+                print(f"    {commodity.capitalize()}: {per_warehouse_quantity}")
 
         # Display details for auxiliary warehouses
         print("\nAuxiliary Warehouses:")
@@ -304,7 +318,18 @@ class Hatchery:
             removed_technician = self.technicians.pop()
             print(f"Removed technician: {removed_technician}")
 
+    def pay_technicians(self):
+            for tech in self.technicians:
+                amount = tech.weekly_rate * 12  
+                self.cash -= amount
+                print(f"Paid {tech.name}, weekly rate={tech.weekly_rate}, amount={amount}")
 
+    def pay_rent_and_utilities(self):
+        self.cash -= self.config.RENT_UTILITIES_COST
+        print(f"Paid rent/utilities: {self.config.RENT_UTILITIES_COST}")
+
+    def display_finances(self):
+        print(f"Current cash: {self.cash}")
 
     def withdraw_from_warehouse(self, fish, amount):
         required_fertilizer = fish.required_fertilizer * amount
@@ -339,3 +364,4 @@ class Hatchery:
     def end_simulation(self):
         self.return_warehouse_supplies()
         print("Simulation ended.")
+
