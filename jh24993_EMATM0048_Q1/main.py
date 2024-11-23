@@ -23,7 +23,7 @@ def hire_technicians_individually(simulation, num_technicians, quarter):
     for _ in range(num_technicians):
         name = input("Enter Technician Name: ").strip()
         if name:  # Ensure name is not empty
-            # Ensure `name` is treated as a single string
+            # Ensure name is treated as a single string
             simulation.hire_technicians(name, quarter)
         else:
             print("Name cannot be empty. Please try again.")
@@ -48,8 +48,11 @@ def main():
             num_to_remove = abs(num_technicians)
             simulation.remove_technicians(num_to_remove)
             
-        
-        simulation.simulate_quarter(quarter)
+        simulation.simulate_quarter(quarter, num_technicians)
+        simulation.prompt_restock()
+        simulation.display_technicians()
+        print (f"End of Quarter {quarter}")
+
     print("\nSimulation complete.")
     simulation.display_finances()
 
