@@ -73,6 +73,20 @@ class Hatchery:
             Fish("Modal Bass", 50, 500, 3.0, 3, 3, 3.0),
         ]
 
+        # Prompt user to set demand for each fish
+        print("\nSet demand for each fish:")
+        for fish in fishes:
+            while True:
+                try:
+                    demand = int(input(f"Enter demand for {fish.name} (current max: {fish.max_demand}): "))
+                    if 0 <= demand <= fish.max_demand:
+                        fish.demand = demand
+                        break
+                    else:
+                        print(f"Invalid input. Enter a number between 0 and {fish.max_demand}.")
+                except ValueError:
+                    print("Invalid input. Please enter a valid number.")
+
         total_time_available = 45 * num_technicians
         total_required_labour = sum(fish.labour_constant * fish.demand for fish in fishes)
 
@@ -96,7 +110,6 @@ class Hatchery:
                 revenue = sold * fish.sell_price
                 total_revenue += revenue  # Add to total revenue
                 # Initialize counters for used supplies
-                
                 used_fertilizer += fish.required_fertilizer
                 used_feed += fish.required_feed 
                 used_salt += fish.required_salt 
@@ -126,17 +139,7 @@ class Hatchery:
                             f"{remaining_fish.name}: Demand = {remaining_fish.demand}, Sell = 0"
                         )
                     break
-       
-                else:
-                    print(
-                        f"{fish.name}: Demand = {fish.demand}, Sell = {fish.demand}"
-                    )
-                    
-
-            remaining_labour = max(0, total_available_labour - sum(
-                min(fish.demand * fish.labour_constant, total_available_labour)
-                for fish in fishes
-            ))
+            ...
         else:
             for fish in fishes:
                 sold = self.process_warehouse_requirements(fish, fish.demand)
@@ -154,21 +157,18 @@ class Hatchery:
             for info in unprocessed_fishes:
                 print(info)
 
-
         # Add total revenue to cash
         self.cash += total_revenue
 
         # Access total supplies for reporting
         total_supplies = self.get_total_supplies()
-        print(f"Insufficient Ingredient for {fish.name}")
-        print(f"Fertilizer need:  {fish.required_fertilizer} storage fertilizer available: {total_supplies['fertilizer'] - 4.35}")
-        print(f"Feed need: {fish.required_feed} storage, Total feed available: {total_supplies['feed'] - 480}")
-        print(f"Salt need: {fish.required_salt} storage, Total salt available: {total_supplies['salt'] - 100}")
+        print(f"Total revenue for Quarter {quarter}: {total_revenue}")
+        print(f"Remaining cash after Quarter {quarter}: {self.cash}")
 
         self.print_warehouse_supplies(quarter)
         self.pay_rent_and_utilities()
         self.display_finances()
-        
+            
         #return insufficient_labour_info, total_supplies
 
         # Print total revenue and updated cash for the quarter
@@ -364,4 +364,3 @@ class Hatchery:
     def end_simulation(self):
         self.return_warehouse_supplies()
         print("Simulation ended.")
-
