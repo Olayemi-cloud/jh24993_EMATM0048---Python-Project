@@ -62,15 +62,16 @@ class Hatchery:
         total_labour_capacity = len(self.technicians) * technician_labour_constant
         spillover_labour = getattr(self, "remaining_labour", 0)
         total_available_labour = total_labour_capacity + spillover_labour
+        remaining_labour = 0  # Default value
 
         # Define fishes with specific requirements
         fishes = [
-            Fish("Clef Fins", 25, 250, 2.0, 2, 2, 2.0),
-            Fish("Timpani Snapper", 10, 350, 1.0, 1.5, 1, 1.0),
-            Fish("Andalusian Brim", 15, 250, 0.5, 0.5, 1.2, 0.5),
-            Fish("Plagal Cod", 20, 400, 2.0, 2.0, 120, 40),
-            Fish("Fugue Flounder", 30, 500, 2.5, 2.5, 2.5, 2.5),
-            Fish("Modal Bass", 50, 500, 3.0, 3, 3, 3.0),
+            Fish("Clef Fins", 25, 250, 2.0, 2, 2, 2.0, 25),
+            Fish("Timpani Snapper", 10, 350, 1.0, 1.5, 1, 1.0, 10),
+            Fish("Andalusian Brim", 15, 250, 0.5, 0.5, 1.2, 0.5, 15),
+            Fish("Plagal Cod", 20, 400, 2.0, 2.0, 120, 40, 20),
+            Fish("Fugue Flounder", 30, 500, 2.5, 2.5, 2.5, 2.5, 30),
+            Fish("Modal Bass", 50, 500, 3.0, 3, 3, 3.0, 50),
         ]
 
         # Prompt user to set demand for each fish
@@ -78,7 +79,7 @@ class Hatchery:
         for fish in fishes:
             while True:
                 try:
-                    demand = int(input(f"Enter demand for {fish.name} (current max: {fish.max_demand}): "))
+                    demand = int(input(f"Fish {fish.name}, demand {fish.demand}, Sell {fish.max_demand}: "))
                     if 0 <= demand <= fish.max_demand:
                         fish.demand = demand
                         break
