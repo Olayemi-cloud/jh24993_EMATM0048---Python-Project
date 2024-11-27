@@ -37,12 +37,28 @@ hatchery.py - The Hatchery class simulates fish hatchery for all quarters, manag
 
 main.py - This manages the hatchery simulation, to hire/remove technicians, simulate operations in all quarters, track supplies, and display technician status/finances, ensuring control on the hatchery procedures.
 
-## Library used
+### Library used
 
 sys - This library was used for exiting the simulation program after the business goes bankrupt to permit the vendor simulation.
 
 ## Main Program Flow
-fish.py, warehouse.py and technician.py are imported into hatchery.py. Afterwards, hatchery.py and config.py are then imported into the main driver file, main.pY
+fish.py, warehouse.py and technician.py are imported into hatchery.py. Afterwards, hatchery.py and config.py are then imported into the main driver file, main.py
+
+### How to Run the Program
+1. Clone this repository to your local machine.
+2. Ensure Python 3.12 is installed.
+3. Run the all the classes across the modules, then run main.py file
+
+### Code Perculiarities
+
+
+
+
+
+
+
+
+### Conclusion
 
 
 
