@@ -1,3 +1,11 @@
+"""
+Name: Olayemi Amusile
+Exam Number: 
+Description:  Main Entry file for managing and running simulation
+
+Date: November 2024
+"""
+
 from config import Config
 from hatchery import Hatchery
 
@@ -8,10 +16,10 @@ def get_positive_or_negative_int(prompt):
     while True:
         try:
             value = int(input(prompt))
-            if value != 0:  # Ensure the input is not zero
+            if value != 0:  
                 return value
             else:
-                print("Please enter a non-zero integer.")
+               return value
         except ValueError:
             print("Invalid input. Please enter a valid integer.")
 
@@ -58,4 +66,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+
