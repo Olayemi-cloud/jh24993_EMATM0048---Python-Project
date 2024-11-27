@@ -102,7 +102,7 @@ Key data Columns: Post title, Author, Score, Number of Comments, Time posted.
 ### Modules used:
 1.	From collections – collections.Counter (for counting the frequency of an item on a list)
 2.	From wordclod – wordcloud (for visual representation of words)
-3.	From nltk – re  was used for regular expressions to remove special characters, nltk.corpus.stopwords removed stop words, nltk.tokenize.word_tokenize` used to tokenize text, and nltk.stem.WordNetLemmatizer lemmatize words to clean and preprocess text/word data analysis.
+3.	From nltk – re  was used for regular expressions to remove special characters, nltk.corpus.stopwords removed stop words, nltk.tokenize.word_tokenize used to tokenize text, and nltk.stem.WordNetLemmatizer lemmatize words to clean and preprocess text/word data analysis.
 4.	From sklearn - sklearn.feature_extraction.text, sklearn.model_selection, sklearn.linear_model, sklearn.decomposition.LatentDirichletAllocation (for vectorization, validation and regression models)
 
 ### How to run the code:
