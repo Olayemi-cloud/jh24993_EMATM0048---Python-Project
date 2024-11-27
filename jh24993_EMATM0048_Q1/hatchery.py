@@ -175,6 +175,8 @@ class Hatchery:
                 used_fertilizer = sum(fish.required_fertilizer for fish in subset)
                 used_feed = sum(fish.required_feed for fish in subset)
                 used_salt = sum(fish.required_salt for fish in subset)
+                revenue_total = sum(fish.sell_price * fish.demand  for fish in subset)
+               
 
                 """
                 Deduct labour and check for insufficiency
@@ -225,22 +227,29 @@ class Hatchery:
         """
           Add total revenue to cash
         """
-        self.cash += total_cost
+        self.cash += revenue_total
+
+        
+        total_supplies = self.get_total_supplies()
+        print(f"Insufficient Ingredient for {fish.name}{revenue_total}")
+        print(f"Fertilizer need:  {fish.required_fertilizer} storage fertilizer available: {total_supplies['fertilizer'] - used_fertilizer}")
+        print(f"Feed need: {fish.required_feed} storage, Total feed available: {total_supplies['feed'] - used_feed}")
+        print(f"Salt need: {fish.required_salt} storage, Total salt available: {total_supplies['salt'] - used_salt}")
+
 
         """"
          Access total supplies for reporting
         """
         total_supplies = self.get_total_supplies()
-        print(f"Total revenue for Quarter {quarter}: {total_cost}, {used_salt / 10}, {used_feed} {used_fertilizer}")
+        print(f"Total revenue for Quarter {quarter}: {revenue_total}, {used_salt / 10}, {used_feed} {used_fertilizer}")
         print(f"Remaining cash after Quarter {quarter}: {self.cash}")
 
         
 
 
         self.print_warehouse_supplies(quarter, used_fertilizer, used_salt, used_feed)
-
         self.pay_rent_and_utilities()
-        self.pay_technicians()
+        #Yself.pay_technicians()
         self.display_finances()
 
         if self.cash < 0:
@@ -272,8 +281,8 @@ class Hatchery:
 
         # Define prices for each commodity per vendor
         vendor_prices = {
-            "SLIPPERY Lakes": {"fertilizer": 0.3, "feed": 100, "salt": 50},
-            "Scaly Wholesaler": {"fertilizer": 30, "feed": 400, "salt": 250}
+            "SLIPPERY Lakes": {"fertilizer": 3, "feed": 0.1, "salt": 0.5},
+            "Scaly Wholesaler": {"fertilizer": 0.2, "feed": 0.4, "salt": 0.25}
         }
 
         # Check if vendor is valid
@@ -283,9 +292,9 @@ class Hatchery:
 
         # Quantities to restock based on vendor
         if vendor == "SLIPPERY Lakes":
-            restock_quantities = {"fertilizer": 20, "feed": 400, "salt": 200}
+            restock_quantities = {"fertilizer": 4.2, "feed": 600, "salt": 300}
         elif vendor == "Scaly Wholesaler":
-            restock_quantities = {"fertilizer": 30, "feed": 300, "salt": 150}
+            restock_quantities = {"fertilizer": 10, "feed": 200, "salt": 10}
 
         # Use vendor-specific prices
         commodity_prices = vendor_prices[vendor]
@@ -315,15 +324,14 @@ class Hatchery:
         self.cash -= total_cost
 
         # Display restocking details
-        print(f"Restocked supplies from {vendor}:")
+        print(f"Hatchery Name: Estaboga, Cash {total_cost}:")
 
-        # Display details for main warehouses
-        print("\nMain Warehouses:")
+    
         for warehouse in main_warehouses:
             print(f"  {warehouse.name}:")
             for commodity, quantity in restock_quantities.items():
                 per_warehouse_quantity = quantity / total_warehouses
-                print(f"    {commodity.capitalize()}: {per_warehouse_quantity:.2f} (capacity={per_warehouse_quantity:.2f})")
+                print(f"  Warehouses Main:  {commodity.capitalize()}: {per_warehouse_quantity:.2f} (capacity={per_warehouse_quantity:.2f})")
 
         # Display details for auxiliary warehouses
         print("\nAuxiliary Warehouses:")
