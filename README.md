@@ -110,9 +110,29 @@ hatchery.py`
 
 
 
-## Question 2 – Data Analytics
 
-# Please note: The data changes if the webscrape code is clicked on repeatedly, kindly refer to the csv file for an accurate result.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Question 2 – Data Analytics
+
+#3 Please note: The data changes if the webscrape code is clicked on repeatedly, kindly refer to the csv file for an accurate result.
 
 Exploratory data analysis on data web scraped from the subreddit Health on the Reddit App
 
