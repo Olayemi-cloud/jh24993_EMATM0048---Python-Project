@@ -25,11 +25,15 @@ Python 3.12
 The program is modular and organized as follows:
 Modules:The modules contains functions, classes that enhances the program's functionality.
 
-fish.py - 
-warehouse.py -
-technician.py -
-config.py -
-hatchery.py -
+fish.py - This contains two methods with the first managing fish sales and maintanance requirements, the second controls the simulation for fish sale.
+
+warehouse.py - The Warehouse class helps manage a warehouse's inventory. It lets you add stock without exceeding capacity, remove stock without going below zero, and keeps track of the warehouse's name and stock levels.
+
+Technician.py - This class represents technicians, storing their name and weekly rate. It includes string methods for user-friendly display __str__ and detailed representation __repr__ for debugging or improvement reasons.
+
+config.py - The Config class defines static variable for simulation- initial cash, technician weekly rates, warehouse capacity, rent costs, a labor constant, and the number of fish types.
+
+hatchery.py - The Hatchery class simulates fish hatchery for all quarters, manages technicians, supplies, and finances. It handles hiring, restocking, and processing fish demands, calculating revenue, and tracking resources. The simulation adjusts for labour shortages and monitors financial status.
 
 
 
