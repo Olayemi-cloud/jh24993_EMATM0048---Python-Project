@@ -21,6 +21,16 @@ Steps captured in the model
 The project is implemented using:
 Python 3.12
 
+## Program Setup
+The program is modular and organized as follows:
+Modules:
+
+fish.py
+warehouse.py`
+technician.py`
+config.py`
+hatchery.py`
+
 
 
 
@@ -121,6 +131,15 @@ Key data Columns: Post title, Author, Score, Number of Comments, Time posted.
 3.	Exploratory Data Analysis: Statistics – mean, median, range & standard deviation. Visualise relationships using bar charts, health maps, sentimental analysis.
 4.	Visualisation: Using libraries like Matplotlib, Seaborn, Plotly to create correlation heatmaps, word clouds, bar charts
 5.	Summary and Conclusion: The analysis showed the trend of author engagement, sentiment changes over time and the connection between post scores and comments, highlighting the need for more accurate prediction models.
+
+### Library used –
+1.	Praw –  This library was used to access Reddit API to extract data. Installed by typing “pip install praw” on the anaconda prompt.
+2.	Pandas – Used for data analysis and manipulations of the data set
+3.	Seaborn – Used for statistical data visualization in collaboration with Matplotlib.
+4.	Matplotlib.pyplot – For creating visuals, bar chart, histogram, doughnut charts etc
+5.	Sklearn(scikit-learn) – Machine learning library used for regression.
+6.	Arrow – Handled the date for more accurate precision, installed via "pip install arrow"
+
 
 ### Modules used:
 1.	From collections – collections.Counter (for counting the frequency of an item on a list)
