@@ -33,10 +33,16 @@ Technician.py - This class represents technicians, storing their name and weekly
 
 config.py - The Config class defines static variable for simulation- initial cash, technician weekly rates, warehouse capacity, rent costs, a labor constant, and the number of fish types.
 
-hatchery.py - The Hatchery class simulates fish hatchery for all quarters, manages technicians, supplies, and finances. It handles hiring, restocking, and processing fish demands, calculating revenue, and tracking resources. The simulation adjusts for labour shortages and monitors financial status.
+hatchery.py - The Hatchery class simulates fish hatchery for all quarters, manages technicians, supplies, and finances. It handles hiring, restocking, and processing fish demands, calculating revenue, and tracking resources. The simulation adjusts for labour shortages and track finances.
 
+main.py - This manages the hatchery simulation, to hire/remove technicians, simulate operations in all quarters, track supplies, and display technician status/finances, ensuring control on the hatchery procedures.
 
+## Library used
 
+sys - This library was used for exiting the simulation program after the business goes bankrupt to permit the vendor simulation.
+
+## Main Program Flow
+fish.py, warehouse.py and technician.py are imported into hatchery.py. Afterwards, hatchery.py and config.py are then imported into the main driver file, main.pY
 
 
 
