@@ -1,9 +1,13 @@
-# In warehouse.py
+"""
+Name: Olayemi Amusile
+Description:  This script contains warehouse functions to add and to remove stocks, add name of warehouse and display the warehouse capacity
+Date: November 2024
+"""
 class Warehouse:
     def __init__(self, name, capacity):
         """
-        param name: Name of the warehouse
-        param capacity: Maximum capacity of the warehouse
+        :param name: Name of the warehouse
+        :param capacity: Maximum capacity of the warehouse
         """
         self.name = name
         self.capacity = capacity
