@@ -1,6 +1,23 @@
 # jh24993_EMATM0048
 Summative Assessment
 
+## Question 1 - Fish Hatchery simulation model.
+
+Developing a model that manage the activities of a hatchery using OOP – Object Oriented Programming
+
+## Introduction
+
+This project uses Object Oriented Programming to create a model that coordinates the running of a fish hatchery business. The model manages activities like buying, selling and restocking of fish and the resources used in handling the fish (fertilizers, feed, salt). The model also manages the addition and removal of technicians that are in charge of the fish maintenance and sale. Another interesting part of the model is the fact that it shows the payment plan for technician. It also shows the list of Vendors and the availability of resources in the warehouse. Finally, it shows the cash flow of the hatchery business and indicates depreciation that occurs at every quarter including when the hatchery goes bankrupt.
+
+Steps captured in the model
+- Buying, selling, and restocking fish.
+- Managing resources such as fertilizers, feed, and salt.
+- Adding and removing technicians responsible for fish maintenance and sales.
+- Tracking technician payment plans.
+- Listing vendors and monitoring warehouse resource availability.
+- Displaying cash flow and depreciation at every quarter, including identifying when the hatchery goes bankrupt.
+
+
 
 
 
