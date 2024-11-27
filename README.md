@@ -23,13 +23,13 @@ Python 3.12
 
 ## Program Setup
 The program is modular and organized as follows:
-Modules:
+Modules:The modules contains functions, classes that enhances the program's functionality.
 
-fish.py
-warehouse.py`
-technician.py`
-config.py`
-hatchery.py`
+fish.py - 
+warehouse.py -
+technician.py -
+config.py -
+hatchery.py -
 
 
 
