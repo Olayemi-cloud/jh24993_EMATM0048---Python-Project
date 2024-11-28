@@ -78,13 +78,19 @@ Plagal Cod: 0
 Fogue Flounder: 0
 Fish Modal Bass: 0
 
+The program shows number of proccessed fish to track the demanded and sold fish.
+
+### Extension
+The extension allows you to choose a fish specialty for a paricular technician.
+You can enter yes or no to prompt that a technician have a specialty
+For simulation 1, choose Clefins for 1st technician and Timpani snapper for the 2nd technician. 
+
 
 
 ### Conclusion:
-This program provides a system to manage the activities of a fish hatchery fish sell, employee employmet, resources and finance management. It is designed to be easily extended for more improvements.
+This program provides a system to manage the activities of a fish hatchery, including fish sales, employee management, resource allocation, and financial management. It is designed to be easily extendable for future improvements.
 
-
-
+During the development of this project, I encountered some challenges, particularly with calculations. These setbacks have motivated me to prioritize starting projects earlier in the future, ensuring sufficient time for testing and refinement. 
 
 
 
