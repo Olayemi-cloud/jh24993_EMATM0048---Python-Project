@@ -81,7 +81,7 @@ Fish Modal Bass: 0
 The program shows number of proccessed fish to track the demanded and sold fish.
 
 ### Extension
-The extension allows you to choose a fish specialty for a paricular technician.
+The extension allows you to choose a fish specialty for a particular technician.
 You can enter yes or no to prompt that a technician have a specialty
 For simulation 1, choose Clefins for 1st technician and Timpani snapper for the 2nd technician. 
 
