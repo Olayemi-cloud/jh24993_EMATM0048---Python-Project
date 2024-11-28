@@ -154,7 +154,7 @@ class Hatchery:
 
             while True:
                 try:
-                    demand = int(input(f"Fish {fish.name}, demand {fish.demand}, Sell {fish.max_demand}, {fish.required_salt}: "))
+                    demand = int(input(f"Fish {fish.name}, demand {fish.demand}, Sell {fish.max_demand}: "))
                    
                     if 0 <= demand <= fish.max_demand:
                         fish.demand = demand
