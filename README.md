@@ -1,11 +1,11 @@
 # jh24993_EMATM0048
 Summative Assessment
 
-## Question 1 - Fish Hatchery simulation program.
+# Question 1 - Fish Hatchery simulation program.
 
 Developing a program that manages the activities of a hatchery using OOP – Object Oriented Programming
 
-## Introduction
+### Introduction
 
 This project uses Object Oriented Programming to create a model that coordinates the running of a fish hatchery business. The model oversees activities like buying, selling and restocking of fish and the resources used in handling the fish (fertilizers, feed, salt). The model also manages the addition and removal of technicians that are in charge of the fish maintenance and sale. Another interesting part of the model is the fact that it shows the payment plan for technician. It also shows the list of Vendors and the availability of resources in the warehouse. Finally, it shows the cash flow of the hatchery business and indicates depreciation that occurs at every quarter including when the hatchery goes bankrupt.
 
@@ -17,22 +17,50 @@ Steps captured in the model
 - Listing vendors and monitoring warehouse resource availability.
 - Displaying cash flow and depreciation at every quarter, including identifying when the hatchery goes bankrupt.
 
-## Technologies
+### Technologies
 The project is implemented using:
 Python 3.12
 
-## Program Setup
+### Program Setup
 The program is modular and organized as follows:
 Modules:The modules contains functions, classes that enhances the program's functionality.
 
-fish.py - 
-warehouse.py -
-technician.py -
-config.py -
-hatchery.py -
+fish.py - This contains two methods with the first managing fish sales and maintanance requirements, the second controls the simulation for fish sale.
+
+warehouse.py - The Warehouse class helps manage a warehouse's inventory. It lets you add stock without exceeding capacity, remove stock without going below zero, and keeps track of the warehouse's name and stock levels.
+
+Technician.py - This class represents technicians, storing their name and weekly rate. It includes string methods for user-friendly display __str__ and detailed representation __repr__ for debugging or improvement reasons.
+
+config.py - The Config class defines static variable for simulation- initial cash, technician weekly rates, warehouse capacity, rent costs, a labor constant, and the number of fish types.
+
+hatchery.py - The Hatchery class simulates fish hatchery for all quarters, manages technicians, supplies, and finances. It handles hiring, restocking, and processing fish demands, calculating revenue, and tracking resources. The simulation adjusts for labour shortages and track finances.
+
+main.py - This manages the hatchery simulation, to hire/remove technicians, simulate operations in all quarters, track supplies, and display technician status/finances, ensuring control on the hatchery procedures.
+
+### Library used
+
+sys - This library was used for exiting the simulation program after the business goes bankrupt to permit the vendor simulation.
+
+## Main Program Flow
+fish.py, warehouse.py and technician.py are imported into hatchery.py. Afterwards, hatchery.py and config.py are then imported into the main driver file, main.py
+
+### How to Run the Program
+1. Clone this repository to your local machine.
+2. Ensure Python 3.12 is installed.
+3. Run the all the classes across the modules, then run main.py file
+
+### Code Perculiarities
+After running the code, enter the name of technicians and enter inputs for the fish till the last fish.
+Enter input for Clefins: 25
+Timpani Snapper: 10
+Andalusian Brim: 15
+Plagal Cod: 20
+Fogue Flounder: 0
+Fish Modal Bass: 0
 
 
-
+### Conclusion:
+This program provides a system to manage the activities of a fish hatchery fish sell, employee employmet, resources and finance management. It is designed to be easily extended for further analysis and improvements. I encountered calculation errors. Other collaborators should articulate the calculations before starting this kind of project. Thank you for exploring this work.
 
 
 
@@ -169,6 +197,9 @@ Key data Columns: Post title, Author, Score, Number of Comments, Time posted.
 
 ### How to run the code:
 The code should be run using Jupyter notebook.
+
+### Acknowledgement
+Appreciation to the Reddit website for thr dataset from r/health subreddit.
 
 
 
