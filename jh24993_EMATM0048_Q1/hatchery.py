@@ -184,23 +184,23 @@ class Hatchery:
         unprocessed_fishes = []
 
 
-        # Allocate labour from specialized technicians first
+       
         if total_required_labour <= total_specialized_labour:
-            # Specialized technicians can meet the full demand
+           
             time_left -= total_required_labour
             total_revenue += self.process_fish(fishes, total_required_labour, specialized_technicians)
         else:
-            # Specialized technicians meet partial demand, rest is handled by regular technicians
+            
             time_left -= total_specialized_labour
             remaining_labour = total_required_labour - total_specialized_labour
             total_revenue += self.process_fish(fishes, total_specialized_labour, specialized_technicians)
 
-            # Handle remaining demand with regular technicians
+           
             if remaining_labour <= total_regular_labour:
                 time_left -= remaining_labour
                 total_revenue += self.process_fish(fishes, remaining_labour, regular_technicians)
             else:
-                # Not enough labour even from regular technicians
+               
                 print(f"Insufficient labor for remaining demand. Unprocessed fish: {remaining_labour}")
                 total_revenue += self.process_fish(fishes, total_regular_labour, regular_technicians)
                 insufficient_labour_info.append("Labor shortage for some fishes.")
@@ -274,7 +274,9 @@ class Hatchery:
         revenue_total = sum(fish.sell_price * fish.demand  for fish in subset)
                
         self.cash += revenue_total
-        next_fish_details = fishes[pro_fish]
+        num_unprocessed_fishes = num_unprocessed_fishes % len(fishes)
+       # next_fish_details = fishes[num_unprocessed_fishes]
+        next_fish_details = fishes[num_unprocessed_fishes]
      
         
         total_supplies = self.get_total_supplies()
@@ -569,3 +571,4 @@ class Hatchery:
     def end_simulation(self):
         self.return_warehouse_supplies()
         print("Simulation ended.")
+
