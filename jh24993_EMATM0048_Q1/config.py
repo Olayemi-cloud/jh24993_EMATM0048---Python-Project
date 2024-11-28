@@ -1,7 +1,6 @@
 """
 Name: Olayemi Amusile
 Description:  This script contains static variable configuration that was utilized across diffrent functions in the simulation script
-
 Date: November 2024
 """
 
