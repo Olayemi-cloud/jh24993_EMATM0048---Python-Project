@@ -1,6 +1,8 @@
 # jh24993_EMATM0048
 Summative Assessment
 
+github link: https://github.com/Olayemi-cloud/jh24993_EMATM0048
+
 # Question 1 - Fish Hatchery simulation program.
 
 Developing a program that manages the activities of a hatchery using OOP – Object Oriented Programming
@@ -50,17 +52,36 @@ fish.py, warehouse.py and technician.py are imported into hatchery.py. Afterward
 3. Run the all the classes across the modules, then run main.py file
 
 ### Code Perculiarities
-After running the code, enter the name of technicians and enter inputs for the fish till the last fish.
-Enter input for Clefins: 25
+Please enter inputs for all fish. The program takes input for all fish before dispaying and insufficient labour.
+After running the code, enter the name of technicians and enter inputs for the fist fish till the last fish.
+For Quater 1 :Enter input thus:
+Clefins: 25
 Timpani Snapper: 10
 Andalusian Brim: 15
 Plagal Cod: 20
 Fogue Flounder: 0
 Fish Modal Bass: 0
 
+For Quater 2 - Enter input thus:
+Clefins: 25
+Timpani Snapper: 0
+Andalusian Brim: 0
+Plagal Cod: 0
+Fogue Flounder: 0
+Fish Modal Bass: 0
+
+For Quater 2 - Enter input thus:
+Clefins: 0
+Timpani Snapper: 0
+Andalusian Brim: 0
+Plagal Cod: 0
+Fogue Flounder: 0
+Fish Modal Bass: 0
+
+
 
 ### Conclusion:
-This program provides a system to manage the activities of a fish hatchery fish sell, employee employmet, resources and finance management. It is designed to be easily extended for further analysis and improvements. I encountered calculation errors. Other collaborators should articulate the calculations before starting this kind of project. Thank you for exploring this work.
+This program provides a system to manage the activities of a fish hatchery fish sell, employee employmet, resources and finance management. It is designed to be easily extended for more improvements.
 
 
 
