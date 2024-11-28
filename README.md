@@ -41,7 +41,7 @@ main.py - This manages the hatchery simulation, to hire/remove technicians, simu
 
 ### Library used
 
-sys - This library was used for exiting the simulation program after the business goes bankrupt to permit the vendor simulation.
+sys - This library was used for exiting the simulation.
 
 ## Main Program Flow
 fish.py, warehouse.py and technician.py are imported into hatchery.py. Afterwards, hatchery.py and config.py are then imported into the main driver file, main.py
