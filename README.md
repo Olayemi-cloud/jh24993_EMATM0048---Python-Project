@@ -229,7 +229,7 @@ The code should be run using Jupyter notebook.
 Appreciation to the Reddit website for thr dataset from r/health subreddit.
 
 ### More info
-Please use the most recent clean_data_new
+For the clean data, Please use the most recent clean_data - cleaned_health_reddit_data_new.csv
 
 
 
