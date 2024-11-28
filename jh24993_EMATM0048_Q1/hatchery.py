@@ -56,17 +56,21 @@ class Hatchery:
         return total_supplies
 
 
-    def hire_technicians(self, name, quarter):
+    def hire_technicians(self, name, quarter, specialty):
         """
-        Hires a single technician with the provided name for each quarters.
+        Hires a single technician with the provided name and specialty for each quarter.
+
+        Args:
+            name (str): Name of the technician.
+            quarter (str): Quarter for which the technician is hired.
+            specialty (str): Specialty of the technician.
 
         Returns:
-            string: Technician names and weekly rates
-    
+            None
         """
-        technician = Technician(name, self.config.TECHNICIAN_WEEKLY_RATE)
+        technician = Technician(name, self.config.TECHNICIAN_WEEKLY_RATE, specialty)
         self.technicians.append(technician)
-        print(f"Hired {name}, weekly rate={technician.weekly_rate} in quarter {quarter}")
+        print(f"Hired {name}, specialty={specialty}, weekly rate={technician.weekly_rate} in quarter {quarter}")
 
     def remove_technicians(self, num_to_remove):
         """
@@ -124,12 +128,19 @@ class Hatchery:
         """
          Define fishes with specific requirements
         """
+
+         # Categorize technicians based on specialty
+        specialized_technicians = [t for t in self.technicians if t.specialty != "Regular"]
+        regular_technicians = [t for t in self.technicians if t.specialty == "Regular"]
+
+        total_specialized_labour = len(specialized_technicians) * technician_labour_constant
+        total_regular_labour = len(regular_technicians) * technician_labour_constant
         fishes = [
             Fish("Clef Fins", 25, 250, 2.0, 2.5, 300, 50, 25),
             Fish("Timpani Snapper", 10, 350, 1.0, 0.5, 90, 20, 10),
             Fish("Andalusian Brim", 15, 250, 0.5, 1.35, 90, 30, 15),
             Fish("Plagal Cod", 20, 400, 2.0, 2.0, 120, 40, 20),
-            Fish("Fugue Flounder", 30, 500, 2.5, 2.5, 2.5, 2.5, 30),
+            Fish("Fugue Flounder", 30, 500, 2.5, 2.5, 300, 2.5, 30),
             Fish("Modal Bass", 50, 500, 3.0, 3, 3, 3.0, 50),
         ]
         """
@@ -143,7 +154,7 @@ class Hatchery:
 
             while True:
                 try:
-                    demand = int(input(f"Fish {fish.name}, demand {fish.demand}, Sell {fish.max_demand}: "))
+                    demand = int(input(f"Fish {fish.name}, demand {fish.demand}, Sell {fish.max_demand}, {fish.required_salt}: "))
                    
                     if 0 <= demand <= fish.max_demand:
                         fish.demand = demand
@@ -171,6 +182,28 @@ class Hatchery:
         used_salt = 0
         insufficient_labour_info = []
         unprocessed_fishes = []
+
+
+        # Allocate labour from specialized technicians first
+        if total_required_labour <= total_specialized_labour:
+            # Specialized technicians can meet the full demand
+            time_left -= total_required_labour
+            total_revenue += self.process_fish(fishes, total_required_labour, specialized_technicians)
+        else:
+            # Specialized technicians meet partial demand, rest is handled by regular technicians
+            time_left -= total_specialized_labour
+            remaining_labour = total_required_labour - total_specialized_labour
+            total_revenue += self.process_fish(fishes, total_specialized_labour, specialized_technicians)
+
+            # Handle remaining demand with regular technicians
+            if remaining_labour <= total_regular_labour:
+                time_left -= remaining_labour
+                total_revenue += self.process_fish(fishes, remaining_labour, regular_technicians)
+            else:
+                # Not enough labour even from regular technicians
+                print(f"Insufficient labor for remaining demand. Unprocessed fish: {remaining_labour}")
+                total_revenue += self.process_fish(fishes, total_regular_labour, regular_technicians)
+                insufficient_labour_info.append("Labor shortage for some fishes.")
 
         if total_required_labour > total_available_labour:
             for i, fish in enumerate(fishes):
@@ -235,18 +268,33 @@ class Hatchery:
         pro_fish = 6 - num_unprocessed_fishes
         subset = fishes[:-pro_fish]
         used_fertilizer = round(sum(fish.required_fertilizer for fish in subset) * 0.1, 2)
+        used_fertilizers = round(sum(fish.required_fertilizer for fish in subset), 2)
         used_feed = sum(fish.required_feed for fish in subset)
         used_salt = sum(fish.required_salt for fish in subset)
         revenue_total = sum(fish.sell_price * fish.demand  for fish in subset)
                
         self.cash += revenue_total
-
+        next_fish_details = fishes[pro_fish]
+     
         
         total_supplies = self.get_total_supplies()
-        print(f"Insufficient Ingredient for {6 - num_unprocessed_fishes} {fish.name}{revenue_total}")
-        print(f"Fertilizer need:  {fish.required_fertilizer} storage fertilizer available: {total_supplies['fertilizer'] - used_fertilizer}")
-        print(f"Feed need: {fish.required_feed} storage, Total feed available: {total_supplies['feed'] - used_feed}")
-        print(f"Salt need: {fish.required_salt} storage, Total salt available: {total_supplies['salt'] - used_salt}")
+        
+        if (
+            used_fertilizer + next_fish_details.required_fertilizer >= total_supplies['fertilizer'] or
+            used_feed + next_fish_details.required_feed >= total_supplies['feed'] or
+            used_salt + next_fish_details.required_salt >= total_supplies['salt']
+        ):
+            # Feedback on shortages
+            print(f"Insufficient Ingredient for  {fish.name}")
+
+            # Helper function for readability
+            def log_shortage(resource, used, total, required):
+                remaining = total - used
+                print(f"{resource.capitalize()} need: {required}, storage available: {remaining}")
+
+            log_shortage("fertilizer", used_fertilizers, total_supplies['fertilizer'], fish.required_fertilizer)
+            log_shortage("feed", used_feed, total_supplies['feed'], fish.required_feed)
+            log_shortage("salt", used_salt, total_supplies['salt'], fish.required_salt)
 
 
         """"
@@ -266,8 +314,26 @@ class Hatchery:
 
         if self.cash < 0:
             print("\nThe business has gone bankrupt. Simulation terminated.")
-        #return False        
-
+        #return False     
+        # 
+        #    
+    def process_fish(self, fishes, available_labour, technicians):
+            """
+            Processes fish based on the available labor and technicians.
+            """
+            total_processed = 0
+            for fish in fishes:
+                required_labour = fish.labour_constant * fish.demand
+                if available_labour >= required_labour:
+                    available_labour -= required_labour
+                    total_processed += fish.demand
+                    print(f"Processed {fish.demand} of {fish.name}")
+                else:
+                    processed = available_labour / fish.labour_constant
+                    total_processed += processed
+                    print(f"Processed {processed} of {fish.name} (partial)")
+                    break
+            return total_processed
     def process_warehouse_requirements(self, fish, amount):
         required_fertilizer = fish.required_fertilizer * amount
         required_feed = fish.required_feed * amount
@@ -434,13 +500,19 @@ class Hatchery:
             for item, quantity in supplies.items():
                 print(f"  - {item.capitalize()}: {quantity} units")
 
-    def hire_technicians(self, name, quarter):
+    def hire_technicians(self, name, quarter, specialty):
         """
-        Hires a single technician with the provided name.l
+        Hires a single technician with the provided name and specialty for a specific quarter.
+
+        Args:
+            name (str): Name of the technician.
+            quarter (int): Quarter for which the technician is hired.
+            specialty (str): Specialty of the technician.
         """
-        technician = Technician(name, self.config.TECHNICIAN_WEEKLY_RATE)
+        technician = Technician(name, self.config.TECHNICIAN_WEEKLY_RATE, specialty)
         self.technicians.append(technician)
-        print(f"Hired {name}, weekly rate={technician.weekly_rate} in quarter {quarter}")
+        print(f"Hired {name} (specialty={specialty}), weekly rate={technician.weekly_rate} in quarter {quarter}")
+
 
     def remove_technicians(self, num_to_remove):
         if num_to_remove > len(self.technicians):
