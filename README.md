@@ -228,6 +228,8 @@ The code should be run using Jupyter notebook.
 ### Acknowledgement
 Appreciation to the Reddit website for thr dataset from r/health subreddit.
 
+### More info
+Please use the most recent clean_data_new
 
 
 
