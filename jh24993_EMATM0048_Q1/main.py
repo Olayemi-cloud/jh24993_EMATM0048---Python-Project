@@ -6,6 +6,14 @@ Description:  Main Entry file for managing and running simulation
 Date: November 2024
 """
 
+"""
+Name: Olayemi Amusile
+Exam Number: 
+Description:  Main Entry file for managing and running simulation
+
+Date: November 2024
+"""
+
 from config import Config
 from hatchery import Hatchery
 
@@ -43,6 +51,9 @@ def main():
     num_quarters = get_positive_or_negative_int("Please enter number of quarters: ")
     simulation = Hatchery(Config, num_quarters)
 
+    # Initialize technician count
+    total_technicians = 0
+
     for quarter in range(1, num_quarters + 1):
         print(f"\n{'=' * 40}\n====== SIMULATING quarter {quarter} ======\n{'=' * 40}")
 
@@ -50,20 +61,24 @@ def main():
             "Enter number of technicians to add (positive) or remove (negative): "
         )
         
+        # Adjust total technician count
+        total_technicians += num_technicians
+
         if num_technicians > 0:
             hire_technicians_individually(simulation, num_technicians, quarter)
         elif num_technicians < 0:
             num_to_remove = abs(num_technicians)
             simulation.remove_technicians(num_to_remove)
-            
-        simulation.simulate_quarter(quarter, num_technicians)
+
+        # Pass the total technician count to the simulation for the quarter
+        simulation.simulate_quarter(quarter, total_technicians)
         simulation.prompt_restock()
         simulation.display_technicians()
-        print (f"End of Quarter {quarter}")
+        print(f"End of Quarter {quarter}")
 
     print("\nSimulation complete.")
     simulation.display_finances()
 
+
 if __name__ == "__main__":
     main()
-
