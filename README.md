@@ -1,6 +1,8 @@
 # jh24993_EMATM0048
 Summative Assessment
 
+github link: https://github.com/Olayemi-cloud/jh24993_EMATM0048
+
 # Question 1 - Fish Hatchery simulation program.
 
 Developing a program that manages the activities of a hatchery using OOP – Object Oriented Programming
